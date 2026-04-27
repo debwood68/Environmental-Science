@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environmental Science — Final Class</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&family=Source+Code+Pro:wght@500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f4f6f0; font-family: 'Source Sans 3', sans-serif; font-size: 17px; line-height: 1.75; color: #1a2a10; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #1a3a0a 0%, #2a6010 55%, #3a8020 100%); padding: 48px 40px 40px; border-bottom: 4px solid #7ab030; }
+  .hero-eyebrow { font-family: 'Source Code Pro', monospace; font-size: 0.72rem; letter-spacing: 0.2em; color: #b8e070; text-transform: uppercase; margin-bottom: 10px; }
+  .hero h1 { font-family: 'Merriweather', serif; font-size: 2.3rem; font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 12px; }
+  .hero p { color: #c8e898; font-size: 1rem; max-width: 600px; margin-bottom: 20px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #e0f4c0; font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; font-family: 'Source Code Pro', monospace; }
+
+  /* LAYOUT */
+  .page-wrap { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  /* SECTION HEADERS */
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 40px 0 20px; }
+  .section-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .icon-quiz { background: #1a3a0a; color: #b8e070; }
+  .icon-news { background: #0a2a3a; color: #70c8e0; }
+  .section-header h2 { font-family: 'Merriweather', serif; font-size: 1.35rem; font-weight: 700; color: #1a2a10; }
+
+  /* INTRO CARD */
+  .intro-card { background: #fff; border-radius: 12px; border: 1px solid #d0e0b0; padding: 24px 28px; margin-bottom: 8px; }
+  .intro-card p { color: #2a4010; font-size: 0.96rem; line-height: 1.7; }
+  .sphere-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .sphere-chip { padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+  .chip-geo    { background: #e8e6e0; color: #3a3830; }
+  .chip-hydro  { background: #dceef8; color: #0a3060; }
+  .chip-atmos  { background: #eceaf8; color: #2a2070; }
+  .chip-bio    { background: #dff0cc; color: #1a4010; }
+  .chip-cryo   { background: #d0f0e4; color: #064030; }
+  .chip-climate{ background: #fae8c0; color: #5a3000; }
+
+  /* QUIZ */
+  .quiz-box { background: #fff; border-radius: 12px; border: 1px solid #d0e0b0; overflow: hidden; }
+  .quiz-controls { padding: 20px 24px; border-bottom: 1px solid #e8f0d8; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .q-pill { padding: 5px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; font-family: 'Source Sans 3', sans-serif; }
+  .q-pill:hover { transform: scale(1.04); }
+  .q-pill-all     { background: #f0f0e8; color: #2a2a20; border-color: #c0c0a8; }
+  .q-pill-all.active { background: #d0d0b8; border-color: #909080; }
+  .q-pill-geo     { background: #e8e6e0; color: #3a3830; border-color: #b0a898; }
+  .q-pill-geo.active { background: #c0bcb0; border-color: #706860; }
+  .q-pill-hydro   { background: #dceef8; color: #0a3060; border-color: #90c0e0; }
+  .q-pill-hydro.active { background: #a8d0f0; border-color: #2060a0; }
+  .q-pill-atmos   { background: #eceaf8; color: #2a2070; border-color: #b0a8e0; }
+  .q-pill-atmos.active { background: #c8c0f0; border-color: #6060c0; }
+  .q-pill-bio     { background: #dff0cc; color: #1a4010; border-color: #90d060; }
+  .q-pill-bio.active { background: #b0e080; border-color: #408020; }
+  .q-pill-cryo    { background: #d0f0e4; color: #064030; border-color: #70d0a8; }
+  .q-pill-cryo.active { background: #90e0c0; border-color: #108060; }
+  .q-pill-climate { background: #fae8c0; color: #5a3000; border-color: #e0b040; }
+  .q-pill-climate.active { background: #f0c850; border-color: #a07010; }
+
+  .gen-btn { background: #1a3a0a; color: #c8e898; border: none; padding: 10px 24px; border-radius: 8px; font-size: 0.95rem; font-family: 'Source Sans 3', sans-serif; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .gen-btn:hover { background: #2a5a14; }
+  .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .score-row { display: flex; gap: 20px; align-items: center; padding: 12px 24px; background: #f8faf4; border-bottom: 1px solid #e0ead0; font-size: 0.88rem; color: #3a5020; }
+  .score-row strong { font-size: 1rem; color: #1a3a0a; }
+
+  .quiz-question { padding: 24px; }
+  .q-badge { display: inline-block; padding: 3px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; }
+  .badge-geo    { background: #d0ccc0; color: #2a2820; }
+  .badge-hydro  { background: #a8cce8; color: #082850; }
+  .badge-atmos  { background: #c0b8e8; color: #201870; }
+  .badge-bio    { background: #a8d878; color: #183010; }
+  .badge-cryo   { background: #88d8b8; color: #043828; }
+  .badge-climate{ background: #f0c060; color: #482800; }
+
+  .q-label { font-family: 'Source Code Pro', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #6a8050; margin-bottom: 8px; }
+  .q-text  { font-size: 1.05rem; color: #1a2a10; line-height: 1.65; margin-bottom: 16px; font-family: 'Merriweather', serif; font-weight: 400; }
+  .q-textarea { width: 100%; border: 1px solid #c8d8a8; border-radius: 8px; padding: 10px 14px; font-size: 0.93rem; font-family: 'Source Sans 3', sans-serif; color: #1a2a10; background: #f8faf4; resize: vertical; min-height: 80px; outline: none; transition: border-color 0.15s; }
+  .q-textarea:focus { border-color: #5a9020; }
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .sm-btn { padding: 7px 16px; font-size: 0.85rem; font-family: 'Source Sans 3', sans-serif; font-weight: 600; background: #fff; border: 1px solid #b8c8a0; border-radius: 8px; cursor: pointer; color: #2a4010; transition: background 0.1s; }
+  .sm-btn:hover { background: #f0f8e8; }
+  .feedback { margin-top: 14px; padding: 14px 16px; border-radius: 8px; font-size: 0.93rem; line-height: 1.65; display: none; }
+  .feedback.show { display: block; }
+  .fb-hint   { background: #eeeaf8; color: #2a2070; border-left: 3px solid #8070d0; }
+  .fb-answer { background: #e8f4d8; color: #1a4010; border-left: 3px solid #5a9020; }
+  .quiz-start { text-align: center; padding: 32px 20px; color: #6a8050; font-size: 0.95rem; }
+
+  /* NEWS FEED */
+  .news-box { background: #fff; border-radius: 12px; border: 1px solid #b0d8e8; overflow: hidden; }
+  .news-header-bar { background: #0a2a3a; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .news-header-bar h3 { font-family: 'Merriweather', serif; font-size: 1rem; font-weight: 700; color: #fff; }
+  .news-header-bar span { font-size: 0.78rem; color: #80c0d8; font-family: 'Source Code Pro', monospace; }
+  .news-tabs { display: flex; border-bottom: 1px solid #d0e8f0; padding: 0 16px; background: #f4fafd; }
+  .news-tab { padding: 10px 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; color: #5a8090; transition: all 0.15s; font-family: 'Source Sans 3', sans-serif; white-space: nowrap; }
+  .news-tab.active { color: #0a4060; border-bottom-color: #2090c0; }
+  .news-list { padding: 8px 0; min-height: 200px; }
+  .news-item { padding: 14px 24px; border-bottom: 1px solid #e8f4f8; transition: background 0.1s; }
+  .news-item:last-child { border-bottom: none; }
+  .news-item:hover { background: #f4fafd; }
+  .news-item a { text-decoration: none; color: #0a3050; font-weight: 600; font-size: 0.93rem; line-height: 1.4; display: block; margin-bottom: 4px; }
+  .news-item a:hover { color: #2090c0; text-decoration: underline; }
+  .news-meta { font-size: 0.78rem; color: #7a9aaa; font-family: 'Source Code Pro', monospace; }
+  .news-source-tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; margin-right: 6px; }
+  .tag-bbc    { background: #c00; color: #fff; }
+  .tag-guardian { background: #005689; color: #fff; }
+  .tag-nasa   { background: #0b3d91; color: #fff; }
+  .tag-carbon { background: #2d6a2d; color: #fff; }
+  .news-loading { text-align: center; padding: 32px; color: #7a9aaa; font-size: 0.93rem; }
+  .news-error { text-align: center; padding: 32px; color: #8a5030; font-size: 0.93rem; background: #fdf4ee; }
+  .news-refresh { background: none; border: 1px solid #70a0b8; color: #2a6080; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; transition: all 0.15s; }
+  .news-refresh:hover { background: #e0f0f8; }
+
+  /* FOOTER */
+  .page-footer { margin-top: 48px; padding: 20px 0; border-top: 1px solid #c8d8a8; text-align: center; font-size: 0.82rem; color: #7a9060; font-family: 'Source Code Pro', monospace; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Environmental Science · SQA Level 6/7 · Final Class</div>
+  <h1>🌍 That's a Wrap, Planet Earth</h1>
+  <p>You've journeyed through six Earth systems. Time to see how much you remember — and stay curious with the latest from the field.</p>
+  <div class="hero-tags">
+    <span class="tag">Revision</span>
+    <span class="tag">Quiz</span>
+    <span class="tag">Live News</span>
+    <span class="tag">All Spheres</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- INTRO -->
+  <div class="intro-card">
+    <p>This final session brings together everything from the module. Use the quiz below to test your understanding across all six topics — pick a sphere or go random. Then check out the live news feed to see how these systems are making headlines right now.</p>
+    <div class="sphere-grid">
+      <span class="sphere-chip chip-geo">Geosphere</span>
+      <span class="sphere-chip chip-hydro">Hydrosphere</span>
+      <span class="sphere-chip chip-atmos">Atmosphere</span>
+      <span class="sphere-chip chip-bio">Biosphere</span>
+      <span class="sphere-chip chip-cryo">Cryosphere</span>
+      <span class="sphere-chip chip-climate">Climate Change</span>
+    </div>
+  </div>
+
+  <!-- QUIZ SECTION -->
+  <div class="section-header">
+    <div class="section-icon icon-quiz">🧠</div>
+    <h2>Ask the Planet — Revision Quiz</h2>
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-controls">
+      <div class="pill-row" id="pillRow">
+        <button class="q-pill q-pill-all active" data-sphere="any">Any sphere</button>
+        <button class="q-pill q-pill-geo"   data-sphere="Geosphere">Geosphere</button>
+        <button class="q-pill q-pill-hydro" data-sphere="Hydrosphere">Hydrosphere</button>
+        <button class="q-pill q-pill-atmos" data-sphere="Atmosphere">Atmosphere</button>
+        <button class="q-pill q-pill-bio"   data-sphere="Biosphere">Biosphere</button>
+        <button class="q-pill q-pill-cryo"  data-sphere="Cryosphere">Cryosphere</button>
+        <button class="q-pill q-pill-climate" data-sphere="Climate Change">Climate Change</button>
+      </div>
+      <button class="gen-btn" id="genBtn">Generate a question →</button>
+    </div>
+
+    <div class="score-row">
+      <span>Answered: <strong id="scoreVal">0</strong></span>
+      <span>Correct: <strong id="correctVal">0</strong></span>
+      <span id="pctSpan" style="margin-left:auto;"></span>
+    </div>
+
+    <div id="questionArea">
+      <div class="quiz-start">Pick a sphere above and hit <strong>Generate a question</strong> to begin!</div>
+    </div>
+  </div>
+
+  <!-- NEWS SECTION -->
+  <div class="section-header" style="margin-top:48px;">
+    <div class="section-icon icon-news">📡</div>
+    <h2>Environmental Science — In the News</h2>
+  </div>
+
+  <div class="news-box">
+    <div class="news-header-bar">
+      <h3>Live Headlines</h3>
+      <button class="news-refresh" id="refreshBtn" onclick="loadAllFeeds()">↻ Refresh</button>
+    </div>
+    <div class="news-tabs" id="newsTabs">
+      <button class="news-tab active" data-feed="all">All</button>
+      <button class="news-tab" data-feed="climate">Climate</button>
+      <button class="news-tab" data-feed="environment">Environment</button>
+      <button class="news-tab" data-feed="science">Science</button>
+    </div>
+    <div class="news-list" id="newsList">
+      <div class="news-loading">Loading latest headlines…</div>
+    </div>
+  </div>
+
+  <div class="page-footer">Environmental Science · SQA Level 6/7 · All spheres, all connected.</div>
+</div>
+
+<script>
+/* ===================== QUIZ ===================== */
+const questions = [
+  {sphere:'Geosphere',q:'The same rock type can behave as a solid or a plastic depending on conditions. Where in the Earth does this happen, and why does it matter for plate tectonics?',hint:'Think about the difference between the lithosphere and the asthenosphere — what changes with depth?',answer:'Deep in the mantle, high temperatures and pressures cause rock to behave plastically — it flows very slowly rather than fracturing. This asthenosphere allows the rigid lithospheric plates above it to move. Without this, plate tectonics could not operate, so there would be no mountain building, subduction, or seafloor spreading.'},
+  {sphere:'Geosphere',q:'A geologist finds fossils of marine organisms on the top of a mountain range. What does this tell us, and which Earth processes explain it?',hint:'Think about where marine fossils form and how mountains are built.',answer:'Marine fossils form in ocean sediments. Their presence at altitude tells us these rocks were once on a seafloor and have since been uplifted by continental collision and mountain-building (orogeny). This is powerful evidence for plate tectonics and the ancient movement of continents.'},
+  {sphere:'Geosphere',q:'Evaluate this statement: "Volcanic eruptions are purely destructive events."',hint:'Think about what volcanoes add to the environment over longer timescales.',answer:'This is an oversimplification. While eruptions cause immediate destruction, they also build new land, release gases that contributed to early atmosphere formation, and produce highly fertile soils over time. Many of the world\'s most productive agricultural regions sit on volcanic rock.'},
+  {sphere:'Geosphere',q:'Why does oceanic crust tend to be denser and younger than continental crust?',hint:'Think about where new oceanic crust is created and what happens to old oceanic crust.',answer:'Oceanic crust is made of basalt, which is denser than the granite-dominated continental crust. It forms at mid-ocean ridges through seafloor spreading, but is destroyed at subduction zones as it sinks into the mantle. Continental crust is too buoyant to subduct, so it can persist for billions of years.'},
+  {sphere:'Geosphere',q:'How does the rock cycle connect the surface of the Earth to its deep interior?',hint:'Think about what happens to sedimentary rock when it gets buried deep enough.',answer:'Surface weathering and erosion produce sediments that form sedimentary rocks. Deep burial creates metamorphic rocks via heat and pressure. At extreme depths, rocks can melt and return to the surface as igneous rock via volcanism. This cycle continuously moves material between surface and interior.'},
+  {sphere:'Hydrosphere',q:'A river in Scotland has been dammed for a hydroelectric scheme. Describe three ways this might affect the river system downstream.',hint:'Think about sediment, water temperature, and flow patterns.',answer:'Dams trap sediment, so downstream rivers become sediment-starved and may erode their banks. Water released from deep reservoirs is colder and more oxygen-poor, affecting aquatic life. Dams also alter the natural flood regime, disrupting species that depend on seasonal flooding.'},
+  {sphere:'Hydrosphere',q:'Why is it a problem that most of Earth\'s freshwater is locked in ice caps and glaciers?',hint:'Think about accessibility and human and ecosystem needs.',answer:'Although ice sheets hold around 69% of Earth\'s freshwater, it is largely inaccessible in liquid form. As climate change melts glaciers, there may be a short-term increase in river flow followed by long-term reduction as ice reserves shrink, threatening water security for millions.'},
+  {sphere:'Hydrosphere',q:'Ocean salinity varies across the globe. What causes this variation and why does it matter for ocean circulation?',hint:'Think about evaporation, precipitation, and how water density affects movement.',answer:'Salinity is higher where evaporation exceeds rainfall and lower near the poles and river mouths. Saltier water is denser and sinks, driving thermohaline circulation — the global conveyor belt. Changes in salinity from melting ice can disrupt this circulation with major climate consequences.'},
+  {sphere:'Hydrosphere',q:'A farmer claims that draining a wetland will be good for the local water supply. Do you agree?',hint:'Think about what wetlands do for water storage, filtration, and flood control.',answer:'This claim is questionable. Wetlands store water during heavy rainfall and release it slowly, reducing flooding. They also filter pollutants and recharge groundwater. Draining them typically leads to faster surface runoff, increased flood risk, and reduced water quality — likely harming the water supply overall.'},
+  {sphere:'Hydrosphere',q:'Why does the ocean absorb heat much more slowly than land, and what are the climate implications?',hint:'Think about specific heat capacity and what happens to coastal versus inland regions.',answer:'Water has a high specific heat capacity, requiring lots of energy to change temperature. Coastal regions therefore experience milder, more stable climates. The ocean also acts as a major heat buffer, absorbing excess heat from the atmosphere — though this is causing ocean warming with serious consequences for marine ecosystems.'},
+  {sphere:'Atmosphere',q:'The ozone layer protects life on Earth, yet ozone near the ground is a pollutant. How can the same molecule be both beneficial and harmful?',hint:'Think about altitude and what ozone interacts with at each level.',answer:'In the stratosphere, ozone absorbs harmful UV radiation, protecting DNA. Near the ground, ozone forms as a secondary pollutant from vehicle emissions reacting in sunlight. At this level it irritates the lungs, damages crops, and contributes to smog. The molecule is the same — the difference is location and what it interacts with.'},
+  {sphere:'Atmosphere',q:'Why does temperature decrease with altitude in the troposphere but increase in the stratosphere?',hint:'Think about where the heat sources for each layer are located.',answer:'The troposphere is heated mainly from below — the Earth\'s surface absorbs solar radiation and re-emits heat, so temperature falls with distance from this source. The stratosphere is heated from above by ozone absorbing UV, so temperature rises with altitude. This creates a stable layer that traps weather beneath it.'},
+  {sphere:'Atmosphere',q:'A classmate says "weather and climate are the same thing." How would you correct them?',hint:'Think about timescales and predictability.',answer:'Weather is the short-term state of the atmosphere at a specific place and time — for example, rain in Glasgow on Tuesday. Climate is the long-term average over decades — for example, Scotland generally having mild, wet winters. You cannot predict exact weather beyond a week, but you can describe a region\'s climate reliably.'},
+  {sphere:'Atmosphere',q:'How did early life on Earth fundamentally change the composition of the atmosphere?',hint:'Think about what cyanobacteria contributed billions of years ago.',answer:'Early Earth\'s atmosphere had almost no free oxygen. When photosynthetic cyanobacteria evolved around 2.7 billion years ago, they released oxygen as a by-product. This Great Oxidation Event transformed the atmosphere, allowing aerobic life to evolve and eventually forming the ozone layer that makes the surface habitable.'},
+  {sphere:'Atmosphere',q:'Why are cities often warmer than surrounding rural areas?',hint:'Think about surfaces, heat storage, and human activity.',answer:'Cities experience the urban heat island effect. Dark surfaces absorb more solar radiation, buildings trap and re-radiate heat, and waste heat from vehicles and industry adds warmth. Reduced vegetation means less evaporative cooling. These factors raise city temperatures by 1–5°C compared to surrounding rural areas.'},
+  {sphere:'Biosphere',q:'Why might losing a single predator species from an ecosystem have far greater consequences than losing a herbivore species?',hint:'Think about trophic cascades and what predators regulate.',answer:'Predators regulate prey populations and behaviour — a trophic cascade. Removing a top predator can cause prey to boom, overgrazing vegetation, collapsing habitat for many other species. The reintroduction of wolves in Yellowstone even changed river courses by altering where elk grazed. Predators have disproportionate effects relative to their numbers.'},
+  {sphere:'Biosphere',q:'Two areas have the same species richness but very different biodiversity. How is this possible?',hint:'Think about what other dimensions of biodiversity exist beyond species count.',answer:'Biodiversity includes species richness but also evenness (how equally abundant species are) and diversity of functional roles. If one area has 10 species but one dominates, its functional diversity is lower. Genetic diversity within species and variety of habitats also matter — two areas can have identical species lists but very different ecological complexity.'},
+  {sphere:'Biosphere',q:'A tropical rainforest and a boreal forest both have trees, but their ecological roles in the global carbon cycle differ enormously. Why?',hint:'Think about rate of growth, decomposition, and temperature.',answer:'Tropical rainforests have year-round warmth, driving rapid photosynthesis and equally rapid decomposition — carbon cycles quickly. Boreal forests grow slowly due to cold, and cold slows decomposition, so carbon accumulates in soils and peat over centuries. Boreal soils may store more long-term carbon, while tropical forests lock more in living biomass.'},
+  {sphere:'Biosphere',q:'Evaluate this statement: "Non-native species are always bad for ecosystems."',hint:'Think about the difference between introduced and invasive species.',answer:'This is an oversimplification. Many non-native species integrate without causing harm, and some provide benefits. The concern is with invasive species that spread aggressively or introduce disease. The impact depends on the species, the receiving ecosystem, and the timescale — blanket statements overlook this complexity.'},
+  {sphere:'Biosphere',q:'How do biomes demonstrate that climate is the primary driver of ecosystem type, rather than geography alone?',hint:'Think about why similar environments appear on different continents.',answer:'Similar biomes appear at similar latitudes on different continents — tropical rainforests in South America, Africa, and Southeast Asia share similar structure because they share similar temperature and rainfall regimes. This shows climate determines vegetation type, even though actual species differ due to separate evolutionary histories.'},
+  {sphere:'Cryosphere',q:'Why could melting permafrost become a self-reinforcing feedback loop in climate change?',hint:'Think about what is stored in permafrost and what releasing it does to the atmosphere.',answer:'Permafrost contains vast stores of organic matter frozen for thousands of years. As temperatures rise and permafrost thaws, bacteria decompose this matter and release CO₂ and methane — both greenhouse gases. This additional warming causes more thawing, releasing more gases, creating a dangerous positive feedback loop.'},
+  {sphere:'Cryosphere',q:'Sea ice and glaciers are both cryosphere, but their melting has very different effects on sea level. Explain why.',hint:'Think about where the ice sits — in water or on land.',answer:'Sea ice floats on the ocean and is already displacing water, so when it melts, sea level does not rise — just as a melting ice cube does not overflow a glass. Glaciers and ice sheets sit on land. When this ice melts, it adds new water to the ocean, directly raising sea level.'},
+  {sphere:'Cryosphere',q:'How does the loss of Arctic sea ice affect global temperatures beyond the Arctic itself?',hint:'Think about albedo and what happens to heat that used to be reflected.',answer:'Sea ice is highly reflective (high albedo). When it melts, dark ocean water absorbs far more solar energy, warming the water further — an albedo feedback loop. This Arctic amplification also affects jet streams and weather patterns across the Northern Hemisphere, including Europe.'},
+  {sphere:'Cryosphere',q:'Many mountain communities depend on glaciers as a water supply. How does glacier retreat threaten them?',hint:'Think about the difference between short-term melt increase and long-term glacier disappearance.',answer:'In the short term, accelerated glacier melt can increase water flow, giving a false sense of security. However, as glaciers shrink, summer meltwater will decrease and eventually disappear. These communities face severe long-term water shortages for drinking, agriculture, and hydroelectric power.'},
+  {sphere:'Cryosphere',q:'Why is Antarctica warming more slowly than the Arctic, even though both are polar regions?',hint:'Think about what surrounds each pole and the role of the Antarctic circumpolar current.',answer:'The Arctic is an ocean surrounded by land and warms rapidly as sea ice disappears. Antarctica is a landmass surrounded by the Antarctic Circumpolar Current, which isolates it from warmer waters. Its high elevation and albedo also slow warming, though parts of West Antarctica are now warming rapidly.'},
+  {sphere:'Climate Change',q:'The global average temperature has risen by about 1.2°C since pre-industrial times. Why do scientists consider this a significant and dangerous change?',hint:'Think about what small average shifts mean for extremes, and compare to past climate shifts.',answer:'A global average masks much larger regional changes and dramatically increased frequency of extremes — heatwaves, droughts, and floods. The last ice age was only about 5–6°C cooler on average, yet produced radically different conditions. A 1.2°C shift represents an enormous redistribution of energy, with effects already visible in sea level rise and ice loss.'},
+  {sphere:'Climate Change',q:'Some people argue that climate has always changed naturally, so current change is not a concern. How would you respond?',hint:'Think about rate of change and attribution science.',answer:'Natural climate change has occurred throughout Earth\'s history, driven by orbital cycles and volcanism. However, current warming is occurring around 10 times faster than natural post-ice-age warming. Isotopic analysis of carbon directly links the CO₂ increase to fossil fuel burning. The "it\'s natural" argument ignores the pace of change and the clear human fingerprint.'},
+  {sphere:'Climate Change',q:'Why is it inaccurate to say that cutting CO₂ emissions will immediately stop climate change?',hint:'Think about the lifetime of CO₂ in the atmosphere and heat already stored in the ocean.',answer:'CO₂ persists in the atmosphere for hundreds of years, so emissions already released will continue to warm the planet. The ocean has also absorbed enormous heat that will gradually transfer back to the atmosphere. Even if all emissions stopped today, temperature would continue rising for decades — this committed warming means we must also prepare to adapt.'},
+  {sphere:'Climate Change',q:'Compare mitigation and adaptation as responses to climate change. Why do we need both?',hint:'Think about what each approach actually does, and what neither can fully achieve alone.',answer:'Mitigation tackles the cause — reducing greenhouse gas emissions to limit future warming. Adaptation addresses consequences — adjusting systems to cope with changes already occurring. Mitigation alone cannot prevent all impacts because some warming is locked in. Adaptation alone cannot solve the problem because unchecked warming will eventually exceed our capacity to adapt.'},
+  {sphere:'Climate Change',q:'How does climate change create a "threat multiplier" effect in regions already experiencing poverty or conflict?',hint:'Think about what climate impacts do to food, water, and stability in vulnerable regions.',answer:'Climate change amplifies existing stresses. In regions facing food insecurity, drought further reduces harvests. Water scarcity intensifies conflict. Coastal flooding displaces vulnerable communities. This creates cycles of migration, resource conflict, and state fragility. Climate change does not create problems from nothing — it makes existing fragile situations worse.'},
+];
+
+const badgeClass = {
+  'Geosphere':'badge-geo','Hydrosphere':'badge-hydro','Atmosphere':'badge-atmos',
+  'Biosphere':'badge-bio','Cryosphere':'badge-cryo','Climate Change':'badge-climate'
+};
+
+let selectedSphere='any', answered=0, correct=0, usedIdx=[], currentHint='', currentAnswer='', revealed=false;
+
+document.querySelectorAll('.q-pill').forEach(p=>{
+  p.addEventListener('click',()=>{
+    document.querySelectorAll('.q-pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    selectedSphere=p.dataset.sphere;
+  });
+});
+document.getElementById('genBtn').addEventListener('click', genQ);
+
+function genQ(){
+  revealed=false;
+  const pool = questions.filter(q=>selectedSphere==='any'||q.sphere===selectedSphere);
+  const avail = pool.filter(q=>!usedIdx.includes(questions.indexOf(q)));
+  let picked;
+  if(!avail.length){ usedIdx=[]; picked=pool[Math.floor(Math.random()*pool.length)]; }
+  else { picked=avail[Math.floor(Math.random()*avail.length)]; }
+  usedIdx.push(questions.indexOf(picked));
+  currentHint=picked.hint; currentAnswer=picked.answer;
+  const bc=badgeClass[picked.sphere]||'badge-geo';
+  document.getElementById('questionArea').innerHTML=`
+    <div class="quiz-question">
+      <span class="q-badge ${bc}">${picked.sphere}</span>
+      <p class="q-label">Your question</p>
+      <p class="q-text">${picked.q}</p>
+      <textarea class="q-textarea" id="ans" placeholder="Write your answer here before revealing…"></textarea>
+      <div class="btn-row">
+        <button class="sm-btn" onclick="showHint()">Show hint</button>
+        <button class="sm-btn" onclick="revealAns()">Reveal model answer</button>
+      </div>
+      <div class="feedback fb-hint" id="hintBox"></div>
+      <div class="feedback fb-answer" id="ansBox"></div>
+      <div class="btn-row" id="markRow" style="display:none;">
+        <button class="sm-btn" onclick="mark(true)">✓ Got it right</button>
+        <button class="sm-btn" onclick="mark(false)">✗ Not quite</button>
+        <button class="sm-btn" onclick="genQ()">Next question →</button>
+      </div>
+    </div>`;
+}
+
+function showHint(){ const b=document.getElementById('hintBox'); if(b){b.textContent=currentHint;b.classList.add('show');} }
+function revealAns(){ if(revealed)return; revealed=true; const b=document.getElementById('ansBox'); if(b){b.textContent=currentAnswer;b.classList.add('show');} const r=document.getElementById('markRow'); if(r)r.style.display='flex'; }
+function mark(ok){
+  answered++; if(ok)correct++;
+  document.getElementById('scoreVal').textContent=answered;
+  document.getElementById('correctVal').textContent=correct;
+  const pct=answered?Math.round(correct/answered*100):0;
+  document.getElementById('pctSpan').textContent=answered?`${pct}% success rate`:'';
+  genQ();
+}
+
+/* ===================== NEWS FEED ===================== */
+const FEEDS = [
+  { url:'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml', source:'BBC', tag:'tag-bbc', cat:'environment' },
+  { url:'https://www.theguardian.com/environment/climate-crisis/rss', source:'Guardian', tag:'tag-guardian', cat:'climate' },
+  { url:'https://www.theguardian.com/environment/rss', source:'Guardian', tag:'tag-guardian', cat:'environment' },
+  { url:'https://climate.nasa.gov/news/rss.xml', source:'NASA', tag:'tag-nasa', cat:'science' },
+  { url:'https://www.carbonbrief.org/feed/', source:'Carbon Brief', tag:'tag-carbon', cat:'climate' },
+];
+
+const PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+let allItems=[], activeTab='all';
+
+async function loadFeed(feed){
+  try {
+    const r = await fetch(PROXY + encodeURIComponent(feed.url));
+    const d = await r.json();
+    if(d.status==='ok' && d.items){
+      return d.items.slice(0,6).map(item=>({
+        title: item.title,
+        link:  item.link,
+        date:  item.pubDate ? new Date(item.pubDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '',
+        source: feed.source,
+        tag:   feed.tag,
+        cat:   feed.cat
+      }));
+    }
+  } catch(e){}
+  return [];
+}
+
+async function loadAllFeeds(){
+  document.getElementById('newsList').innerHTML='<div class="news-loading">Loading latest headlines…</div>';
+  const results = await Promise.all(FEEDS.map(loadFeed));
+  allItems = results.flat().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  if(!allItems.length){
+    document.getElementById('newsList').innerHTML='<div class="news-error">Could not load feeds — check your internet connection or try refreshing.</div>';
+    return;
+  }
+  renderNews();
+}
+
+function renderNews(){
+  const filtered = activeTab==='all' ? allItems : allItems.filter(i=>i.cat===activeTab);
+  if(!filtered.length){
+    document.getElementById('newsList').innerHTML='<div class="news-loading">No articles found for this category.</div>';
+    return;
+  }
+  document.getElementById('newsList').innerHTML = filtered.slice(0,10).map(item=>`
+    <div class="news-item">
+      <a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>
+      <div class="news-meta">
+        <span class="news-source-tag ${item.tag}">${item.source}</span>
+        ${item.date}
+      </div>
+    </div>`).join('');
+}
+
+document.querySelectorAll('.news-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.news-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    activeTab=tab.dataset.feed;
+    renderNews();
+  });
+});
+
+loadAllFeeds();
+</script>
+</body>
+</html>
