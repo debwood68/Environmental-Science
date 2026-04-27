@@ -109,6 +109,7 @@
   .tag-guardian { background: #005689; color: #fff; }
   .tag-nasa   { background: #0b3d91; color: #fff; }
   .tag-carbon { background: #2d6a2d; color: #fff; }
+  .tag-convo  { background: #c04a00; color: #fff; }
   .news-loading { text-align: center; padding: 32px; color: #7a9aaa; font-size: 0.93rem; }
   .news-error { text-align: center; padding: 32px; color: #8a5030; font-size: 0.93rem; background: #fdf4ee; }
   .news-refresh { background: none; border: 1px solid #70a0b8; color: #2a6080; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; transition: all 0.15s; }
@@ -303,6 +304,8 @@ const FEEDS = [
   { url:'https://www.theguardian.com/environment/rss', source:'Guardian', tag:'tag-guardian', cat:'environment' },
   { url:'https://climate.nasa.gov/news/rss.xml', source:'NASA', tag:'tag-nasa', cat:'science' },
   { url:'https://www.carbonbrief.org/feed/', source:'Carbon Brief', tag:'tag-carbon', cat:'climate' },
+  { url:'https://theconversation.com/environment/articles.atom', source:'The Conversation', tag:'tag-convo', cat:'environment' },
+  { url:'https://theconversation.com/science/articles.atom', source:'The Conversation', tag:'tag-convo', cat:'science' },
 ];
 
 const PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
