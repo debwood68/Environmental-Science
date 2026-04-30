@@ -96,7 +96,7 @@ body { background: #f4f6f0; font-family: 'Source Sans 3', sans-serif; font-size:
 .q-num { font-family: 'Source Code Pro', monospace; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #7a9060; margin-bottom: 8px; }
 .q-text { font-size: 1.02rem; color: #1a2a10; line-height: 1.65; margin-bottom: 16px; font-family: 'Merriweather', serif; font-weight: 400; }
 .q-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-.q-opt { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 8px; border: 1.5px solid #d0e0b0; cursor: pointer; transition: all 0.15s; background: #fafcf8; }
+.q-opt { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; border: 1.5px solid #d0e0b0; cursor: pointer; transition: all 0.15s; background: #fafcf8; }
 .q-opt:hover { border-color: #5a9020; background: #f0f8e8; }
 .q-opt.selected { border-color: #3a7010; background: #e8f4d8; }
 .q-opt.correct { border-color: #2a7010; background: #d8f0c0 !important; }
@@ -594,8 +594,23 @@ function submitQuiz() {
     if (correct) score++;
     document.querySelectorAll(`[id^="opt${qi}_"]`).forEach(el => {
       const oi = parseInt(el.id.split('_')[1]);
-      if (oi === q.ans) el.classList.add('correct');
-      else if (oi === chosen && !correct) el.classList.add('incorrect');
+      if (oi === q.ans) {
+        el.classList.add('correct');
+        const letter = el.querySelector('.q-opt-letter');
+        if (letter) letter.innerHTML = '✓';
+        const tag = document.createElement('span');
+        tag.style.cssText = 'margin-left:auto;font-size:0.75rem;font-weight:700;color:#2a7010;white-space:nowrap;padding-left:10px;';
+        tag.textContent = correct ? '✓ Your answer' : '✓ Correct answer';
+        el.appendChild(tag);
+      } else if (oi === chosen && !correct) {
+        el.classList.add('incorrect');
+        const letter = el.querySelector('.q-opt-letter');
+        if (letter) letter.innerHTML = '✗';
+        const tag = document.createElement('span');
+        tag.style.cssText = 'margin-left:auto;font-size:0.75rem;font-weight:700;color:#a03020;white-space:nowrap;padding-left:10px;';
+        tag.textContent = '✗ Your answer';
+        el.appendChild(tag);
+      }
     });
     const fb = document.getElementById(`fb${qi}`);
     fb.textContent = correct ? '✓ ' + q.feedback.correct : '✗ ' + q.feedback.incorrect;
